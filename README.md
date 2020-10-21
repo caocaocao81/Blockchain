@@ -17,7 +17,7 @@ IPV6环境下或者IPV4环境下，Ubuntu里安装docker环境。
 1. 安装节点docker
 2. 同步节点docker
 3. 安装visualserver
-4. 浏览visualserver网页
+4. 浏览visualserver网页的飞行图
 ----
 
 
