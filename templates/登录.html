@@ -1,0 +1,35 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Login</title>  
+    <link rel="stylesheet" type="text/css" href="/static/Login.css"/>  
+</head>  
+<body>  
+    <div id="login">  
+        <h1>Login</h1>  
+        <form method="post" name="myform" action="./success.html">  
+            <input type="text" required="required" placeholder="用户名" name="u" id="user"></input> 
+            <br/><br/> 
+            <input type="password" required="required" placeholder="密码" name="p" id="pass"></input>  
+            <br/>
+            <br/>
+            <button class="but" type="submit" onclick="login()">登录</button>  
+        </form>  
+    </div>
+    
+</body>
+ <script>
+        function login(){
+            var a = document.getElementById("user").value;
+            var b = document.getElementById("pass").value;
+            if(a=="ctr"&& b=="123"){
+                alert("登录成功！")
+                // window.location.href='http://localhost:8080/ex01/%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D.html';
+                console.log(1);
+            }else{
+                alert("登录失败!");
+            }
+        }
+    </script>   
+</html>  
