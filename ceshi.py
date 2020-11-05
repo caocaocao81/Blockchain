@@ -1,3 +1,4 @@
+# coding=utf-8
 import flask
 import json
 import math
@@ -5,6 +6,7 @@ import socket
 import threading
 import os
 import time
+import struct
 import random
 from os.path import join as pjoin
 from argparse import ArgumentParser
@@ -18,16 +20,16 @@ server3 = '127.0.0.1:8545'
 class Client():
 
     def __init__(self,ip,rpcport):
-        self.server_address = ('172.20.0.2', 8000)
+        self.server_address = ('123.56.57.48', 8000)
         self.ww = Web3(HTTPProvider('http://' + ip + ':' + rpcport, request_kwargs={'timeout': 60}))
-        self.ad = self.ww.geth.admin.datadir()
         self.info = self.ww.geth.admin.node_info()
         self.num = self.ww.eth.getBlock("latest")['number']
         print(self.ww.geth.admin.datadir())
         self.port = None
         self.ip = None
-        # 链接标志pip
+        #链接标志pip
         self.connect_flag = False
+
     def recv_msg(self):
         print("正在连接服务器....")
 
@@ -36,12 +38,27 @@ class Client():
             try:
                 self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 self.client_socket.connect(self.server_address)
-                # 连接成功向服务器发送成功标志'Success'
-                self.client_socket.send(b'Success')
-                # 连接成功后开始接收服务器信息
+
+                if self.port >= 3000 and self.port < 5000:
+                    path1 = r"/transcation.txt"
+                    name = "transcation.txt"
+                elif self.port >= 5000 and self.port < 8000:
+                    path1 = r"/node2.txt"
+                    name = "node2.txt"
+                else:
+                    path1 = r"/node3.txt"
+                    name = "node3.txt"
+
+                # 制作报头
+                header_dic = {
+                    'filename': name
+                }
+                header_bytes = json.dumps(header_dic).encode('utf-8')
+                self.client_socket.send(struct.pack('i', len(header_bytes)))
+                self.client_socket.send(header_bytes)
+
                 while True:
                     msg_recv = self.client_socket.recv(1024).decode('gbk')
-
 
                     if msg_recv == 'Success':
                         print('客户端已与服务器成功建立连接...')
@@ -50,30 +67,30 @@ class Client():
                             print('与区块链节点已连接....')
                             # print(self.info['id'])
                             print(self.port)
-                            self.client_socket.sendall(bytes(repr(json.dumps(self.info['enode'])).encode('utf-8')))
-                            # data1 = []
-                            # data = change_rcg(self.port, port1)
-                            # data1.append(data)
-                            # path1 = r"C:\Users\cao\Desktop\runoob01\blockchain\Readfile\transcation.txt"
-                            # text_save(path1,data1)
+
                             while True:
                                 if  self.ww.eth.getBlock('latest')['number']  >self.num :
-                                    self.client_socket.sendall(bytes(repr(json.dumps(self.ww.eth.getBlock('latest')['timestamp'])).encode('utf-8')))
                                     if self.ww.eth.getBlock("latest")['miner'] != self.ww.eth.accounts[0]:
                                         re_timestamp = time.time()
                                         se_timestamp = self.ww.eth.getBlock("latest")['timestamp']
+                                        miner = str(self.ww.eth.getBlock("latest")['miner'])
                                         data1 = []
-                                        port1 = (random.randrange(9) + 1) * 800 + 1000
-                                        data = change_rcg(self.port, port1,se_timestamp,re_timestamp)
-                                        data1.append(data)
-                                        if self.port >=3000 and self.port<5000:
-                                            path1 = r"transcation.txt"
-                                        elif self.port>=5000 and self.port<8000:
-                                            path1 = r"node2.txt"
+                                        print(miner)
+                                        # if miner.lower() == "0x6ac51004e4da0307c67a67ecb896a30b16ebb9a1":
+                                        #     port1 = 5050
+                                        # elif miner.lower() == "0x3fa52ab26561dffbf280313be1d80dbc0fec4830":
+                                        #     port1 = 9545
+                                        # else:
+                                        #     port1 = 3965
+                                        if miner.lower() == "0x026820daf1484a1e5e495839118bfc8b25dffe1e":
+                                            port1 = 3965
                                         else:
-                                            path1 = r"node3.txt"
-                                        text_save(path1, data1)
-                                    # self.client_socket.sendall(bytes(repr(json.dumps(self.ww.eth.getBlock('latest')['timestamp'])).encode('utf-8')))
+                                            port1 = 5000
+                                        print(port1)
+                                        data = change_rcg(port1, self.port,se_timestamp,re_timestamp)
+                                        data1.append(data)
+
+                                        self.text_save(path1, data1)
                                     self.num = self.ww.eth.getBlock('latest')['number']
 
                                     transaction = self.ww.eth.getBlock("latest")['transactions']
@@ -83,32 +100,7 @@ class Client():
                                         'transaction':self.ww.eth.getBlock('latest')['transactions'],
                                         'ip':self.ww.geth.admin.node_info()['ip'],
                                     }
-                                    if transaction :
-                                        # 转换数据
-                                        data1=[]
-                                        port1 = (random.randrange(9)+1) *900 + 1000
-                                        data = change_rcg(self.port,port1)
-                                        data1.append(data)
-                                        reponse1 = {
-                                            'send_ip':self.ip,
-                                            'recieve_ip':server1,
-                                            'timestamp':self.ww.eth.getBlock(transaction['blockNumber'])['timestamp'],
-                                        }
-                                        path = r"./"
-                                        listdir1 = os.listdir(path)
-                                        if 'transcation.json' in listdir1:
-                                            f = open(pjoin(path, 'transcation.json'), 'a')
-                                            f.write(json.dumps(data1, ensure_ascii=False, indent=4))
-                                            f.close()
-                                    path = r"./"
-                                    listdir = os.listdir(path)
-                                    if 'file.txt' in listdir:
-                                        f = open(pjoin(path, 'file.txt'), 'a')
-                                        f.write(json.dumps(reponse, ensure_ascii=False, indent=4))
-                                        f.close()
-                                    continue
-                                else:
-                                    continue
+                                    
                         else:
                             continue
                     elif msg_recv == 'Fail':
@@ -157,29 +149,37 @@ class Client():
         timestamp = time.time()
         return information,timestamp
 
+    def text_save(self,filename, data):  # filename为写入文件的路径，data为要写入数据列表.
+        file = open(filename, 'a')
+        for i in range(len(data)):
+            s = str(data[i]).replace('[', '').replace(']', '') + ',' + '\n'  # 去除[],这两行按数据不同，可以选择
+            self.client_socket.send(s.encode('utf-8'))
+            file.write(s)
+        file.close()
+        print("保存成功")
+
+
 def change_rcg(port1,port2,t1,t2):
     date=[]
     name1={}
     name2={}
-    city_name = ['包头','福州','海口','乌鲁木齐','保定','兰州','中山','丹东','北海','南京','南宁','南昌','南通','金华','湘潭','秦皇岛','绍兴','衢州']
-    value = int(abs(t2-t1)*6)
+    # city_name = ['包头','福州','海口','乌鲁木齐','保定','兰州','中山','丹东','北海','南京','南宁','南昌','南通','金华','湘潭','秦皇岛','绍兴','衢州']
+    value = int(1/abs(t2-t1)*80)
+    print(t2-t1)
     if(int(port1)<5000):
         name1['name'] = '北京'
     elif(int(port1)>=5000 and int(port1)<8000):
         name1['name'] = '上海'
     else:
         name1['name'] = '广州'
-    # if (int(port2) < 5000):
-    #     name2['name'] = '包头'
-    #     name2['value'] = value
-    # elif (int(port2) >= 5000 and int(port2) < 8000):
-    #     name2['name'] = '福建'
-    #     name2['value'] = value
-    # else:
-    #     name2['name'] = '海口'
-    #     name2['value'] = value
-    num = int((port2 - 1800)/450)
-    name2['name'] = city_name[num]
+    # num = int((port2 - 1800)/450)
+    if (int(port2) < 5000):
+        name2['name'] = '北京'
+    elif (int(port2) >= 5000 and int(port2) < 8000):
+        name2['name'] = '上海'
+    else:
+        name2['name'] = '广州'
+    # name2['name'] = city_name[num]
     name2['value'] = value
 
     date.append(name1)
@@ -187,21 +187,27 @@ def change_rcg(port1,port2,t1,t2):
     return date
 
 
-def text_save(filename, data):#filename为写入CSV文件的路径，data为要写入数据列表.
-    file = open(filename,'a')
-    for i in range(len(data)):
-        s = str(data[i]).replace('[','').replace(']','')+','+'\n'#去除[],这两行按数据不同，可以选择
-        # s = s.replace("'",'').replace(',','') +'\n'   #去除单引号，逗号，每行末尾追加换行符
-        file.write(s)
-    file.close()
-    print("保存成功",filename)
+
+
+# def text_save(filename, data):#filename为写入CSV文件的路径，data为要写入数据列表.
+#     file = open(filename,'a')
+#     for i in range(len(data)):
+#         s = str(data[i]).replace('[','').replace(']','')+','+'\n'#去除[],这两行按数据不同，可以选择
+#
+#         # s = s.replace("'",'').replace(',','') +'\n'   #去除单引号，逗号，每行末尾追加换行符
+#         file.write(s)
+#     file.close()
+#     print("保存成功")
+
 
 def main():
+
     parser = ArgumentParser()
-    parser.add_argument('-p', '--port', default=3965, type=int, help='port to listen on')
+    parser.add_argument('-p', '--port', default=9545, type=int, help='port to listen on')
     args = parser.parse_args()
     port = str(args.port)
-    ip = '192.168.43.188'
+    ip = '172.20.0.1'
+    # rpcport = input("请输入要输入的端口号:")
     wf = Client(ip,port)
     wf.port = int(port)
     wf.ip = str(ip)+":"+str(port)
@@ -214,7 +220,6 @@ if __name__ == '__main__':
 
     while True:
         a = input()
-
 
 
 

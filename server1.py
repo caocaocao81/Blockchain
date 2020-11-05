@@ -3,6 +3,7 @@ import socket
 import time
 import threading
 import json
+import codecs
 from flask import Flask,render_template,jsonify
 from threading import Thread
 
@@ -82,7 +83,7 @@ py_server.start_new_thread()
 # 数据转换方法
 def change_msg(path):
     data = []
-    with open(path, 'r') as f:
+    with codecs.open(path, 'r','utf-8') as f:
         for line in f:
             data1 = []
             dic = {}
