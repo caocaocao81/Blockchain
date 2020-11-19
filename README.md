@@ -35,3 +35,14 @@ Node节点程序
 5. 区块链节点连接后，进行挖矿等区块更新操作。
 6. visualserver节点接收Node节点更新区块信息并将其作图
 7. 通过浏览器浏览相应visualserver端口查看节点区块所形成的轨迹图。
+
+
+-----
+## docker hub 拉取镜像
+visualserver镜像
+docker pull ctt291247908/ubuntu-python3.7-geth:visualserver 其中server1.py（visualserver程序）以及部分需要的文件放在 /home/blockchain/x 文件内.
+节点镜像:
+docker pull ctt291247908/ubuntu-python3.7-geth:v3 (该镜像内以及注册好六个区块链私链节点)
+docker pull ctt291247908/ubuntu-python3.7-geth:v2 (区块链私链节点还未注册)
+其中区块链节点注册在 /home/geth文件内 ceshi.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 ceshi.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动.
+私链启动命令参考：geth --datadir ces1 --networkid 15 --port 2377 --http --http.addr 0.0.0.0 --http.port 9545 --http.api  debug,net,eth,web3,admin,miner,personal --ipcdisable --http.corsdomain '*' --nodiscover -nousb console 其中--http.port 需要和ceshi.py -p 的端口号一致.
