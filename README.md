@@ -48,4 +48,5 @@ docker pull ctt291247908/ubuntu-python3.7-geth:v3 (该镜像内以及注册好�
 docker pull ctt291247908/ubuntu-python3.7-geth:v2 (区块链私链节点还未注册)
 其中区块链节点注册在 /home/geth文件内 ceshi.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 ceshi.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
 
-私链启动命令参考：geth --datadir ces1 --networkid 15 --port 2377 --http --http.addr 0.0.0.0 --http.port 9545 --http.api  debug,net,eth,web3,admin,miner,personal --ipcdisable --http.corsdomain '*' --nodiscover -nousb console 其中--http.port 需要和ceshi.py -p 的端口号一致。
+私链启动命令参考：geth --datadir ces1 --networkid 15 --port 2377 --http --http.addr 0.0.0.0 --http.port 9545 --http.api  debug,net,eth,web3,admin,miner,personal --ipcdisable --http.corsdomain '*' --nodiscover -nousb console 
+其中--http.port 需要和ceshi.py -p 的端口号一致。
