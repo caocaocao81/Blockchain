@@ -38,12 +38,12 @@ Node节点程序
 
 
 -----
-## 从docker hub 拉取镜像及启动步骤
+## 从docker hub 拉取镜像及启动步骤（CentOS为例）
 ### visualserver镜像：
 docker pull ctt291247908/ubuntu-python3.7-geth:visualserver 
 
-其中server1.py（visualserver程序）以及部分需要的文件放在 /home/blockchain/x 文件内。
-
+其中server1.py（visualserver程序）以及部分需要的文件放在 /home/blockchain/x 文件内。（参考https://blog.csdn.net/magerguo/article/details/72514813 ）
+ 
 ### 节点镜像:
 docker pull ctt291247908/ubuntu-python3.7-geth:v3 (该镜像内以及注册好六个区块链私链节点)
 docker pull ctt291247908/ubuntu-python3.7-geth:v2 (区块链私链节点还未注册)
