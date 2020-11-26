@@ -40,22 +40,22 @@ Node节点程序
 -----
 ## 从docker hub 拉取镜像及启动步骤（CentOS为例）
 ### visualserver镜像：
-docker pull ctt291247908/ubuntu-python3.7-geth:vserver1 
+docker pull ctt291247908/ubuntu-python3.7-geth:vserver3 
 
 启动容器：
-docker run  -it  -p 8000:8000 -p 5030:5030  --name visualserver ctt291247908/ubuntu-python3.7-geth:vserver1    
+docker run  -it  -p 6060:6060 -p 3000:3000  --name visualserver ctt291247908/ubuntu-python3.7-geth:vserver3    
 进入容器后
 cd /home/blochchain/x
 
 python3 server1.py
 
-其中server1.py（visualserver程序）以及部分需要的文件放在docker里 /home/blockchain/x 文件内。其中启动容器时候开放的端口中5030是外部访问查看作图的端口，8000是外部node节点连接visualserver节点的端口。
+其中server1.py（visualserver程序）以及部分需要的文件放在docker里 /home/blockchain/x 文件内。其中启动容器时候开放的端口中3000是外部访问查看作图的端口，6060是外部node节点连接visualserver节点的端口。
 
 ### 节点镜像:
-docker pull ctt291247908/ubuntu-python3.7-geth:v4 
+docker pull ctt291247908/ubuntu-python3.7-geth:v5
 
 启动容器
-docker run -it --name node ctt291247908/ubuntu-python3.7-geth:v4
+docker run -it --name node ctt291247908/ubuntu-python3.7-geth:v5
 
 进入容器后 到geth目录
 
@@ -68,12 +68,12 @@ cd /home/blockchain
 
 vim ceshi.py
 
-修改ceshi.py内24行ip地址修改成visualserver节点所在主机的ip 端口号默认为8000 再转到第210行修改ip为0.0.0.0如果私链没在本机启动则修改ip为启动私链节点的ip地址(本例直接在容器内启动则只需要改为0.0.0.0即可)
+修改ceshi.py内24行ip地址修改成visualserver节点所在主机的ip 端口号默认为6060 再转到第210行修改ip为0.0.0.0如果私链没在本机启动则修改ip为启动私链节点的ip地址(本例直接在容器内启动则只需要改为0.0.0.0即可)
 上述完成后 在当前目录下
 
-python3 ceshi.py -p xxxx (端口号为启动私链节点时候该节点的 --http.port)
+python3 ceshi1.py -p xxxx (端口号为启动私链节点时候该节点的 --http.port)
 
-其中区块链节点注册在 /home/geth文件内 ceshi.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 ceshi.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
+其中区块链节点注册在 /home/geth文件内 ceshi1.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 ceshi1.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
 
 ### 私链启动：
 创建命令参考:geth --datadir data1 -nousb init genesis.json
