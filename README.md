@@ -41,10 +41,10 @@ Node节点程序
 -----
 ## 具体安装步骤（从docker hub 拉取镜像及启动步骤，以CentOS 7.4机器为例）
 ### 安装visualserver镜像：
-docker pull ctt291247908/ubuntu-python3.7-geth:vserver3 
+docker pull ctt291247908/blockchain_python3:vserver 
 
 启动容器：
-docker run  -it  -p 6060:6060 -p 3000:3000  --name visualserver ctt291247908/ubuntu-python3.7-geth:vserver3    
+docker run  -it  -p 6060:6060 -p 3000:3000  --name visualserver ctt291247908/blockchain_python3:vserver   
 进入容器后
 cd /home/blochchain/x
 
@@ -53,10 +53,10 @@ python3 server1.py
 其中server1.py（visualserver程序）以及部分需要的文件放在docker里 /home/blockchain/x 文件内。其中启动容器时候开放的端口中3000是外部访问查看作图的端口，6060是外部node节点连接visualserver节点的端口。
 
 ### 安装区块链节点镜像:
-docker pull ctt291247908/ubuntu-python3.7-geth:v5
+docker pull ctt291247908/ubuntu-python3.7-geth:v6
 
 启动容器
-docker run -it --name node ctt291247908/ubuntu-python3.7-geth:v5
+docker run -it --name node ctt291247908/ubuntu-python3.7-geth:v6
 
 进入容器后 到geth目录
 
@@ -74,7 +74,7 @@ vim ceshi.py
 
 python3 ceshi1.py -p xxxx (端口号为启动私链节点时候该节点的 --http.port)
 
-其中区块链节点注册在 /home/geth文件内 ceshi1.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 ceshi1.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
+其中区块链节点注册在 /home/geth文件内 ceshi1.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 node.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
 
 ### 私链启动：
 创建命令参考:geth --datadir data1 -nousb init genesis.json
@@ -84,4 +84,4 @@ python3 ceshi1.py -p xxxx (端口号为启动私链节点时候该节点的 --ht
 目前还未实现自动连接，如果要与其他区块链节点相连则需要自己手动添加节点admin.addPeer（）括号内为该节点的enode信息。需要把末尾的ip改成要连接到的ip地址 例如本例中@127.0.0.1:2377?discport=0
 要改成@xxxx.xxxx.xxxx.xxxx:2377?discport=0
 
-其中--http.port 需要和ceshi.py -p 的端口号一致。 --port是主机监听的端口
+其中--http.port 需要和node.py -p 的端口号一致。 --port是主机监听的端口
