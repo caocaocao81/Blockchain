@@ -1,0 +1,6 @@
+{'name': 10, 'value': 0, 'value1': 0},
+{'name': 20, 'value': 0, 'value1': 0},
+{'name': 30, 'value': 0, 'value1': 0},
+{'name': 40, 'value': 0, 'value1': 0},
+{'name': 50, 'value': 0, 'value1': 0},
+{'name': 60, 'value': 0, 'value1': 0},

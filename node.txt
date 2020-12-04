@@ -1,0 +1,13 @@
+{'name': '北京'}, {'name': '拉萨', 'value': 0},
+{'name': '北京'}, {'name': '上海', 'value': 0},
+{'name': '北京'}, {'name': '广州', 'value': 0},
+{'name': '北京'}, {'name': '银川', 'value': 0},
+{'name': '广州'}, {'name': '拉萨', 'value': 0},
+{'name': '广州'}, {'name': '北京', 'value': 0},
+{'name': '广州'}, {'name': '上海', 'value': 0},
+{'name': '广州'}, {'name': '银川', 'value': 0},
+{'name': '上海'}, {'name': '拉萨', 'value': 0},
+{'name': '上海'}, {'name': '北京', 'value': 0},
+{'name': '上海'}, {'name': '广州', 'value': 0},
+{'name': '上海'}, {'name': '银川', 'value': 0},
+
