@@ -40,7 +40,7 @@ Node节点程序
 
 -----
 ## 具体安装步骤（从docker hub 拉取镜像及启动步骤，以CentOS 7.4机器为例）
-### 按住visualserver镜像：
+### 安装visualserver镜像：
 docker pull ctt291247908/ubuntu-python3.7-geth:vserver3 
 
 启动容器：
