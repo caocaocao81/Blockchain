@@ -19,7 +19,7 @@ Node节点程序
 4.传输信息到VisualServer节点程序
 
 ----
-## 安装步骤
+## 安装原理
 1. 安装docker
 2. 安装visualserver docker镜像
 3. 安装Node节点 docker镜像
@@ -27,7 +27,7 @@ Node节点程序
 ----
 
 
-## 操作步骤
+## 操作原理
 1. docker拉取visualserver docker镜像
 2. 创建blockchain 网络
 3. 启动visualserver节点的容器（自动运行visualserver节点）
@@ -38,8 +38,8 @@ Node节点程序
 
 
 -----
-## 从docker hub 拉取镜像及启动步骤（CentOS 7.4为例）
-### visualserver镜像：
+## 具体安装步骤（从docker hub 拉取镜像及启动步骤，以CentOS 7.4机器为例）
+### 按住visualserver镜像：
 docker pull ctt291247908/ubuntu-python3.7-geth:vserver3 
 
 启动容器：
@@ -51,7 +51,7 @@ python3 server1.py
 
 其中server1.py（visualserver程序）以及部分需要的文件放在docker里 /home/blockchain/x 文件内。其中启动容器时候开放的端口中3000是外部访问查看作图的端口，6060是外部node节点连接visualserver节点的端口。
 
-### 节点镜像:
+### 安装区块链节点镜像:
 docker pull ctt291247908/ubuntu-python3.7-geth:v5
 
 启动容器
