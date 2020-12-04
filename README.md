@@ -56,7 +56,8 @@ python3 server1.py
 docker pull ctt291247908/ubuntu-python3.7-geth:v6
 
 启动容器
-docker run -it --name node ctt291247908/ubuntu-python3.7-geth:v6
+docker run -p xxxx:28010 -it --name node ctt291247908/ubuntu-python3.7-geth:v6 
+其中-p xxxx为宿主机端口
 
 进入容器后 到geth目录
 
