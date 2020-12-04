@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Echarts迁徙图</title>
+    <!-- 1. 引入Echarts.js及相关JS（这里要用到地图，所以要导入china.js） -->
+    <script src="../static/echarts.js"></script>
+    <script src="../static/china.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+    <!-- 2. 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 1200px;height:700px;"></div>
+    <script type="text/javascript">
+    var chartData = {{block_num|tojson}};
+        //3.初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 4. 配置Echarts的配置项option
+        // 4.1 准备相关JS变量，如下：
+        // 变量1：geoCoordMap：用于给地图上的城市显示的经纬度坐标
+        // 变量2：BJData：模拟 北京 到其他前10城市对应的航线指标数据，在开发中是从数据库动态获取的
+        // 变量3：SHData：模拟 上海 到其他前10城市对应的航线指标数据，在开发中是从数据库动态获取的
+        // 变量4：GZData：模拟 广州 到其他前10城市对应的航线指标数据，在开发中是从数据库动态获取的
+        // 变量5：planePath：模拟出发城市到各目的地城市所对应的路线图，用的是Path:// SVG画的矢量图-小飞机
+        // 变量6：convertData：用于转换成需要的特定格式数据
+        // 变量7：color：定义了对指定上述城市用SVG画图时线条的颜色
+        // 变量8：series：图表的系列，开发时动态填充，这里提供静态数据
+        // 变量9：option：指定图表的配置项和series
+    //     var chartData = [
+    //     {name:'10','value': 137, 'value1': 54},
+    //     {name:'20','value': 150, 'value1': 27},
+    //     {name:'30','value': 283, 'value1': 11},
+    //     {name:'40','value': 304, 'value1': 11},
+    //     {name:'50','value': 316, 'value1': 181},
+    //     {name:'60','value': 368, 'value1': 159}
+    // ];
+    var nameData = [
+        {name:'10'},
+        {name:'20'},
+        {name:'30'},
+        {name:'40'},
+        {name:'50'},
+        {name:'60'}
+        ];
+        option = {
+    title:{
+        show:true,
+        text:'区块数量变化图',
+        top:'1%',
+        left:'1%',
+        textStyle:{
+          color:'#005580',  
+          fontSize:24,
+        },
+    },
+    backgroundColor: "#fff",
+    tooltip: {
+        trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
+    },
+    grid: {
+        top: '12%',
+        left: '1%',
+        right: '1%',
+        bottom: '8%',
+        containLabel: true,
+    },
+    legend: {
+        itemGap: 20,
+        right:'2%',
+        top:'2%',
+        data: ['当前总区块数','所挖区块数'],
+    },
+    xAxis: [{
+        type: 'category',
+        boundaryGap: true,
+        axisLine: { //坐标轴轴线相关设置。数学上的x轴
+            show: false,
+            lineStyle: {
+                color: '#f9f9f9'
+            },
+            
+        },
+        axisLabel: { //坐标轴刻度标签的相关设置
+            textStyle: {
+                color: '#005580',
+                margin: 15,
+            },
+            formatter: '{value}分钟'
+        },
+        axisTick: {
+            show: false,
+        },
+        data: (function(data){
+                    var arr=[];
+                    data.forEach(function(items){
+                        arr.push(items.name);   //name
+                    });
+                    return arr;
+                })(chartData)  //载入横坐标数据
+    }],
+    yAxis: [{
+        name:'',
+        type: 'value',
+        min: 0,
+        splitNumber: 7,
+        splitLine: {
+            show: true,
+            lineStyle: {
+                color: '#e6e5e5'
+            }
+        },
+        axisLine: {
+            show: false,
+        },
+        axisLabel: {
+            margin: 20,
+            textStyle: {
+                color: '#005580',
+            },
+            formatter:function (value, index) {           
+                return value.toFixed(1);      
+            }
+        },
+        axisTick: {
+            show: false,
+        },
+    }],
+    series: [{
+        name: '当前总区块数',
+        type: 'line',
+        symbol: 'circle',
+        symbolSize: 10,
+        lineStyle: {
+            normal: {
+                color: "#F3EB00", // 线条颜色
+            },
+            borderColor: '#F3EB00'
+        },
+        itemStyle: {
+            normal: {
+                color: "#F3EB00",
+            }
+        },
+        data: (function(data){
+                var arr=[];
+                data.forEach(function(items){
+                    arr.push(items.value1);   //value
+                });
+                return arr;
+            })(chartData)  //载入数据
+    },
+     {
+        name: '所挖区块数',
+        type: 'bar',
+        barWidth: 30,
+        color:'#F3EB00',
+         label: {
+            show: true,
+            position: 'insideTop',
+            textStyle: {
+                color: '#A39B00',
+            }
+        },
+        itemStyle: {
+            normal: {
+               barBorderRadius:3,
+            }
+        },
+        data: (function(data){
+                var arr=[];
+                data.forEach(function(items){
+                    arr.push(items.value);   //value
+                });
+                return arr;
+            })(chartData)  //载入数据
+    }]
+};
+
+
+
+        // 5. 使用指定的配置项和数据显示图表
+        myChart.setOption(option)
+    </script>
+</body>
+<html>
