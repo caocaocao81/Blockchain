@@ -4,7 +4,7 @@
 
 **使用环境**
 
-IPV6环境下或者IPV4环境下，Ubuntu里安装docker环境以及geth环境,再在docker拉取部署有python3.7以及flask，web3等相关必备库的镜像。
+IPV6环境下或IPV4环境下，linux里安装docker环境以及geth环境,再在docker拉取部署有python3.7以及flask，web3等相关必备库的镜像。在纯IPV6环境下模拟，我们安装在一台CentOS主机上。
 
 **功能列表**
 
