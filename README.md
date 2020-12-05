@@ -85,25 +85,10 @@ docker run -p 30002:30002 -it --name node1 ctt291247908/blockchain_python3:node1
 注意说明（若要修改visualserver的ip地址）：
 vim /home/blockchain/node.py
 
-修改node.py内19行ip地址修改成visualserver节点所在主机的ip 端口号默认为6060 再转到第210行修改ip为0.0.0.0如果私链没在本机启动则修改ip为启动私链节点的ip地址(本例直接在容器内启动则只需要改为0.0.0.0即可)
+修改node.py内19行ip地址修改成visualserver节点所在主机的ip 端口号默认为6060 
+
 上述完成后 在当前目录下
 
 python3 node.py -p xxxx (端口号为启动私链节点时候该节点的 --http.port)
 
-其中区块链节点注册在 /home/geth文件内 node.py(node节点程序)放在 /home/blockchain文件内。因为未写启动程序的脚本所以启动python程序时候需要手动输入python3 node.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)而且node节点需要区块链私链节点先启动。
-
-### 私链启动：
-若 bash /home/geth/start.sh 脚本命令启动失败则可参考如下来启动节点：
-
-进入相应目录
-cd /home/geth
-
-修改节点自动连接的json文件
-vim static-nodes.json 将里面类似@127.0.0.1:2377?discport=0形式的代码改成@xxxx.xxxx.xxxx.xxxx:2377?discport=0其中xxxx.xxxx.xxxx.xxxx
-
-启动命令参考：geth --datadir data1 --networkid 15 --port xxxx --http --http.addr 0.0.0.0 --http.port xxxx --http.api  debug,net,eth,web3,admin,miner,personal --ipcdisable --http.corsdomain '*' --nodiscover -nousb console 
-
-目前还未实现自动连接，如果要与其他区块链节点相连则需要自己手动添加节点admin.addPeer（）括号内为该节点的enode信息。需要把末尾的ip改成要连接到的ip地址 例如本例中@127.0.0.1:2377?discport=0
-要改成@xxxx.xxxx.xxxx.xxxx:2377?discport=0
-
-其中--http.port 需要和node.py -p 的端口号一致。 --port是主机监听的端口
+其中区块链节点注册在 /home/geth文件内 node.py(node节点程序)放在 /home/blockchain文件内。启动python程序时候手动输入python3 node.py -p xxxx进行启动程序(其中-p是监听区块链私链节点的端口)或者在最初目录下输入bash startnode.py进行启动程序，不过启动node节点需要先启动区块链私链节点（在 /home/geth目录下 输入 bash start.sh启动区块链私链节点，进入节点后可以输入miner.start()进行挖矿操作，本例目前作图数据得自区块更新所产生的数据)。
