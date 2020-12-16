@@ -108,9 +108,9 @@ docker exec -it node /bin/bash
 bash startnode.sh 即可以启动节点
 
 以此类似启动node2 node3两个节点
-docker run -p 31422:31422 -it --name node1 ctt291247908/blockchain_python3:node2
+docker run -p 31422:31422 -it --name node2 ctt291247908/blockchain_python3:node2
 
-docker run -p 30002:30002 -it --name node1 ctt291247908/blockchain_python3:node1
+docker run -p 30002:30002 -it --name node3 ctt291247908/blockchain_python3:node3
 
 重复进入容器后的操作即可。 -p 的端口号如果有所修改需要修改对应的文件 比如修改 -p 9912：28010中的9912则需要修改 /home/geth/static-nodes.json文件中 
 
