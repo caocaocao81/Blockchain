@@ -75,7 +75,7 @@ Node节点程序
 docker pull ctt291247908/blockchain_python3:vserver 
 
 启动容器：
-docker run  -it  -p 6060:6060 -p 3000:3000  --name visualserver ctt291247908/blockchain_python3:vserver   
+docker run  -it  -p 6060:6060 -p 3000:3000  --name visualserver ctt291247908/blockchain_python3:vserver3   
 进入容器后
 cd /home/blochchain/x
 
@@ -83,19 +83,14 @@ python3 server2.py
 
 其中server2.py（visualserver程序）以及部分需要的文件放在docker里 /home/blockchain/x 文件内。其中启动容器时候开放的端口中3000是外部访问查看作图的端口，6060是外部node节点连接visualserver节点的端口。templates文件包含了可视视图文件，而static文件包含作图所要用到的css以及js文件。
 
-### 安装区块链节点镜像:
-docker hub上提供三个测试容器节点： node1 node2 node3 （环境均已配置好）
+### 安装区块链节点镜像:（该分支目前node节点操作 还未完全正确）
 
 拉取测试节点镜像：
 
-docker pull ctt291247908/blockchain_python3:node1
-
-docker pull ctt291247908/blockchain_python3:node2
-
-docker pull ctt291247908/blockchain_python3:node3
+docker pull ctt291247908/blockchain_python3:node
 
 启动容器
-docker run -p 9912:28010 -it --name node1 ctt291247908/blockchain_python3:node1
+docker run -p 9912:28010 -it --name node1 ctt291247908/blockchain_python3:node
 其中-p 9912：28010中9912为宿主机端口，28010为容器端口
 
 进入容器后 到geth目录
@@ -108,9 +103,9 @@ docker exec -it node /bin/bash
 bash startnode.sh 即可以启动节点
 
 以此类似启动node2 node3两个节点
-docker run -p 31422:31422 -it --name node1 ctt291247908/blockchain_python3:node2
+docker run -p 31422:31422 -it --name node2 ctt291247908/blockchain_python3:node1
 
-docker run -p 30002:30002 -it --name node1 ctt291247908/blockchain_python3:node1
+docker run -p 30002:30002 -it --name node3 ctt291247908/blockchain_python3:node1
 
 重复进入容器后的操作即可。 -p 的端口号如果有所修改需要修改对应的文件 比如修改 -p 9912：28010中的9912则需要修改 /home/geth/static-nodes.json文件中 
 
