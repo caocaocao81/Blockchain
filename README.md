@@ -6,6 +6,23 @@
 
 IPV6环境下或IPV4环境下，linux里安装docker环境以及geth环境,再在docker拉取部署有python3.7以及flask，web3等相关必备库的镜像。在纯IPV6环境下模拟，我们安装在一台CentOS主机上。
 
+环境配置：
+宿主机内需要开启IPv6环境。docker容器需要支持IPV6。
+在docker配置文件添加IPv6配置参数，配置文件路径为 /etc/docker/daemon.json。如果文件不存在，请直接创建.
+可直接将docker的默认IPv6网段设置为 fc00:17:1:1::/64,以下是该过程的操作：
+vim /etc/docker/daemon.json，进入文件后写入：
+{
+"ipv6":true,
+"fixed-cidr-v6":"fc00:17:1:1::/64"
+}
+之后手动将刚刚的IPv6内网地址设置NAT转换（docker在IPv6环境下会自动将内网地址做NAT转换)并通过-L查看NAT是否添加成功。
+ip6tables -t nat -A POSTROUTING -s fc00:17:1:1::/64 -j MASQUERADE
+ip6tables -t nat -L
+最后重启docker服务:
+systemctl restart docker. 
+若docker重启报错，原因可能是之前修改的 daemon.json 文件格式或者里面的数值规范不正确.修改即可.
+(此操作可能会导致宿主机ipv6网络无法通信..经测试疑似docker启动了ipv6之后主动将宿主机ipv6路由关闭了...用宿主机启动一个容器可以解决.）
+
 **功能列表**
 
 VisualServer节点程序
