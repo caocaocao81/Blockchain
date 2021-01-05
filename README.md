@@ -24,9 +24,21 @@ vim /etc/docker/daemon.json，进入文件后写入：
 
 }
 
+一创建服务器的ipv6网络就不能与外部通信，接着编辑sysctl.conf 文件加入如下语句
+
+vim /etc/sysctl.conf
+
+net.ipv6.conf.eth0.accept_ra = 2
+
+net.ipv6.conf.all.forwarding = 1
+
+net.ipv6.conf.default.forwarding = 1
+
 之后手动将刚刚的IPv6内网地址设置NAT转换（docker在IPv6环境下会自动将内网地址做NAT转换)并通过-L查看NAT是否添加成功。
 
 ip6tables -t nat -A POSTROUTING -s fc00:17:1:1::/64 -j MASQUERADE
+
+service ip6tables save
 
 ip6tables -t nat -L
 
@@ -36,7 +48,9 @@ systemctl restart docker.
 
 若docker重启报错，原因可能是之前修改的 daemon.json 文件格式或者里面的数值规范不正确.修改即可.
 
-(此操作可能会导致宿主机ipv6网络无法通信..经测试疑似docker启动了ipv6之后主动将宿主机ipv6路由关闭了...用宿主机启动一个容器可以解决.）
+(此操作可能会导致宿主机ipv6网络无法通信..经测试疑似docker启动了ipv6之后主动将宿主机ipv6路由关闭了...）
+
+
 
 **功能列表**
 
